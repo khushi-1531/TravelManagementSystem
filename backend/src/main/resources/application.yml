@@ -1,0 +1,60 @@
+server:
+  port: ${PORT:8081}
+
+spring:
+  application:
+    name: travelsphere-backend
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:travelsphere_db}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      pool-name: TravelSphereHikariCP
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 30000
+      connection-timeout: 20000
+      max-lifetime: 1800000
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.MySQLDialect
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:TravelSphereSuperSecretKeyForJWTSigningMustBeAtLeast256BitsLong2026}
+    expiration-ms: ${JWT_EXPIRATION_MS:900000}
+    refresh-expiration-ms: ${JWT_REFRESH_EXPIRATION_MS:604800000}
+  initial-admin:
+    username: ${TRAVELSPHERE_INITIAL_ADMIN_USERNAME:}
+    email: ${TRAVELSPHERE_INITIAL_ADMIN_EMAIL:}
+    password: ${TRAVELSPHERE_INITIAL_ADMIN_PASSWORD:}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:${FRONTEND_URL:http://localhost:5173,http://localhost:3000}}
+  razorpay:
+    key-id: ${RAZORPAY_KEY_ID:rzp_test_placeholderKeyId}
+    key-secret: ${RAZORPAY_KEY_SECRET:rzp_test_placeholderKeySecret}
+  ai:
+    provider: ${AI_PROVIDER:openai}
+    api-key: ${AI_API_KEY:${OPENAI_API_KEY:}}
+    model: ${AI_MODEL:gpt-4o-mini}
+    base-url: ${AI_BASE_URL:https://api.openai.com/v1}
+  maps:
+    provider: ${MAPS_PROVIDER:osm}
+    external-search-enabled: ${MAPS_EXTERNAL_SEARCH_ENABLED:true}
+    timeout-ms: ${MAPS_TIMEOUT_MS:8000}
+    user-agent: ${MAPS_USER_AGENT:TravelSphere-Platform/1.0 (contact@travelsphere.example)}
+    nominatim-base-url: ${MAPS_NOMINATIM_BASE_URL:https://nominatim.openstreetmap.org}
+  weather:
+    provider: ${WEATHER_PROVIDER:openweather}
+    api-key: ${OPENWEATHER_API_KEY:${WEATHER_API_KEY:}}
+    base-url: ${WEATHER_BASE_URL:https://api.openweathermap.org/data/2.5}
+    open-meteo-base-url: ${OPENMETEO_BASE_URL:https://api.open-meteo.com/v1}
+    timeout-ms: ${WEATHER_TIMEOUT_MS:6000}
+    cache-ttl-minutes: ${WEATHER_CACHE_TTL_MINUTES:15}
+
